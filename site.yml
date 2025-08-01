@@ -1,0 +1,53 @@
+---
+
+- name: Configure EC2 instance and deploy web app
+
+  hosts: xops
+
+  become: true
+ 
+  tasks:
+
+    - name: Install NGINX
+
+      apt:
+
+        name: nginx
+
+        state: present
+ 
+    - name: Copy custom index.html
+
+      copy:
+
+        src: files/index.html
+
+        dest: /var/www/html/index.html
+
+        owner: root
+
+        group: root
+
+        mode: '0644'
+ 
+    - name: Start and enable nginx
+
+      service:
+
+        name: nginx
+
+        state: started
+
+        enabled: true
+ 
+  handlers:
+
+    - name: Restart nginx
+
+      service:
+
+        name: nginx
+
+        state: restarted
+
+ 
